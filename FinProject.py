@@ -5,11 +5,30 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 from pandas_datareader import data as web
 import time
+import tkinter as tk
+from tkinter import *
 
 
 
-##############
+#########################################
 #Some user input here , possibly a GUI for selecting stocks#
+class Stock_interface:    
+    def __init(self , width = 900 , height = 400):
+        Interface = tk.Tk()
+
+        Interface.title("Daily Returns")
+        Interface.geometry((str(width) + 'x' + str(height)) #WxH
+
+        instruction = 'Displays the percentage change of a given stock a give period of time'
+
+        instructions = tk.Label(Interface , text = instruction)
+        instuctions.pack()
+        
+        input = 
+
+
+
+#########################################
 
 
 start_time = time.time()
@@ -34,7 +53,7 @@ title = 'Daily Percentage Change'
 my_stocks = df
 
 
-def returns():
+def daily_returns():
 #create and plot graph (loops through each column)
     for columns in my_stocks.columns.values:
         my_stocks[columns] = my_stocks[columns].pct_change(periods = 10)
@@ -51,6 +70,6 @@ def returns():
 
 # def return_distribution():
 
-returns()
+daily_returns()
 
 print("--- %s seconds ---" % (time.time() - start_time))
