@@ -10,22 +10,6 @@ from tkinter import *
 
 
 
-#########################################
-#Some user input here , possibly a GUI for selecting stocks#
-class Stock_interface:    
-    def __init(self , width = 900 , height = 400):
-        Interface = tk.Tk()
-
-        Interface.title("Daily Returns")
-        Interface.geometry((str(width) + 'x' + str(height)) #WxH
-
-        instruction = 'Displays the percentage change of a given stock a give period of time'
-
-        instructions = tk.Label(Interface , text = instruction)
-        instuctions.pack()
-        
-        input = 
-
 
 
 #########################################
