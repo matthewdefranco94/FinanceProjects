@@ -50,3 +50,7 @@ returns = df.pct_change()
 #covariance matrix , 252 days in trading year
 cov_matrix_annual = returns.cov() * 252
 print(cov_matrix_annual) #diagonal matrix is our variance, all other are covariances
+
+#calculate portolio variance
+port_variance = np.dot(weightings.T , np.dot(cov_matrix_annual , weightings))
+print(port_variance)
