@@ -46,6 +46,7 @@ plt.legend(my_stocks.columns.values , loc = 'upper left')
 plt.show()
 
 returns = df.pct_change()
-print(returns)
 
-print(weightings)
+#covariance matrix , 252 days in trading year
+cov_matrix_annual = returns.cov() * 252
+print(cov_matrix_annual) #diagonal matrix is our variance, all other are covariances
