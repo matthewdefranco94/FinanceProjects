@@ -13,7 +13,7 @@ assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' , 'AMD' , 'CX' ]
 
 #weightings
 weights = 1 / len(assets)
-weightings = np.array([weights for x in range(len(assets))])
+weightings = np.array([weights for x in range(len(assets))]) #would apply the weightings to each element of the list above
 
 
 #get the stock / portfolio starting date 
@@ -53,8 +53,22 @@ print(cov_matrix_annual) #diagonal matrix is our variance, all other are covaria
 
 #calculate portolio variance
 port_variance = np.dot(weightings.T , np.dot(cov_matrix_annual , weightings))
-print("Portfolio variance " + str(port_variance))
+
 
 #calculate portfolio volatility (st.dev)
 port_volatility = np.sqrt(port_variance)
-print("Portfolio volatility " + str(port_volatility))
+
+
+#calculate annual portfolio return
+portfolioSimpleAnnualReturn = np.sum(returns.mean() * weights) * 252
+
+
+#Expected annual return , volatility (risk) , variance
+percent_var = str(round(port_variance , 2)*100) + '%'
+percent_vols = str(round(port_volatility , 2)*100) + '%'
+percent_returns = str(round(portfolioSimpleAnnualReturn , 2 )*100) + '%'
+
+print('Expected variance: ' + percent_var)
+print('Expected volatility: ' + percent_vols)
+print('Expected return: ' + percent_returns)
+
