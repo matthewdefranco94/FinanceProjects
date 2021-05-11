@@ -53,4 +53,8 @@ print(cov_matrix_annual) #diagonal matrix is our variance, all other are covaria
 
 #calculate portolio variance
 port_variance = np.dot(weightings.T , np.dot(cov_matrix_annual , weightings))
-print(port_variance)
+print("Portfolio variance " + str(port_variance))
+
+#calculate portfolio volatility (st.dev)
+port_volatility = np.sqrt(port_variance)
+print("Portfolio volatility " + str(port_volatility))
