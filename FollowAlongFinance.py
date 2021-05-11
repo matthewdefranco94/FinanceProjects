@@ -5,10 +5,15 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
+from pypfopt.efficient_frontier import EfficientFrontier
+from pypfopt import risk_models
+from pypfopt import expected_returns
 plt.style.use('fivethirtyeight')
 
+
+
 #stocks
-assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' , 'AMD' , 'CX' ]
+assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' , 'MT' , 'CX' , 'RACE' ]
 
 
 #weightings
@@ -62,6 +67,11 @@ port_volatility = np.sqrt(port_variance)
 #calculate annual portfolio return
 portfolioSimpleAnnualReturn = np.sum(returns.mean() * weights) * 252
 
+#manual Shapre Ratio (Rp - Rf / StdevPort)
+sharpe = portfolioSimpleAnnualReturn / port_volatility
+
+print('Sharpe ratio : ' + str(round(sharpe)))
+
 
 #Expected annual return , volatility (risk) , variance
 percent_var = str(round(port_variance , 2)*100) + '%'
@@ -71,4 +81,18 @@ percent_returns = str(round(portfolioSimpleAnnualReturn , 2 )*100) + '%'
 print('Expected variance: ' + percent_var)
 print('Expected volatility: ' + percent_vols)
 print('Expected return: ' + percent_returns)
+
+#portfolio optimization !
+#expected returns and annualized sample covariance matrix of asset returns
+
+mu = expected_returns.mean_historical_return(df)
+S = risk_models.sample_cov(df)
+
+#get max sharpe ratio -- performance of an investment vs a 'risk-free' investment
+eff = EfficientFrontier( mu , S )
+weights = eff.max_sharpe()
+clean_weights = eff.clean_weights()
+print(clean_weights)
+print(eff.portfolio_performance(verbose = True))
+
 
