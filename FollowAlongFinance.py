@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 
 #stocks
-assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' , 'AMD' , 'CX']
+assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' , 'AMD' , 'CX' ]
 
 
 #weightings
 weights = 1 / len(assets)
-weightings = [weights for x in range(len(assets))]
+weightings = np.array([weights for x in range(len(assets))])
 
 
 #get the stock / portfolio starting date 
@@ -44,3 +44,8 @@ plt.xlabel('Date')
 plt.ylabel('Adj. Close Price')
 plt.legend(my_stocks.columns.values , loc = 'upper left')
 plt.show()
+
+returns = df.pct_change()
+print(returns)
+
+print(weightings)
