@@ -95,4 +95,12 @@ clean_weights = eff.clean_weights()
 print(clean_weights)
 print(eff.portfolio_performance(verbose = True))
 
+#get discrete allocation of each share per stock
+from pypfopt.discrete_allocation import DiscreteAllocation , get_latest_prices
 
+latest_prices = get_latest_prices(df)
+weights = clean_weights
+discreate_allo = DiscreteAllocation(weights , latest_prices , total_portfolio_value = 10000)
+allocation , leftover = discreate_allo.lp_portfolio()
+print('Discreate allocation: ' , allocation)
+print('Leftover: ${:.2f}'.format(leftover))
