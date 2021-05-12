@@ -7,6 +7,7 @@ from pandas_datareader import data as web
 import time
 import tkinter as tk
 from tkinter import *
+# from FinanceGui import StockSim
 
 
 
@@ -17,10 +18,9 @@ from tkinter import *
 
 start_time = time.time()
 
+assets = ['AMD']
 
-assets = ['FB' , 'TWTR' , 'CX' , 'NFLX' , 'AMD']
-
-weightings = np.array([0.2 , 0.2 , 0.2 , 0.2 , 0.2])
+weightings = np.array([1.0])
 
 stockStartDate = '2015-01-01'
 
@@ -36,12 +36,15 @@ title = 'Daily Percentage Change'
 
 my_stocks = df
 
+stdev = df.std()
+print(stdev)
 
 def daily_returns():
 #create and plot graph (loops through each column)
     for columns in my_stocks.columns.values:
-        my_stocks[columns] = my_stocks[columns].pct_change(periods = 10)
+        my_stocks[columns] = my_stocks[columns].pct_change(periods = 1)
         plt.plot(my_stocks[columns] , label = my_stocks)
+
 
     plt.title(title)
     plt.xlabel('Data' , fontsize= 18)
