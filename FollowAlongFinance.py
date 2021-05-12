@@ -5,20 +5,29 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
+import pandas_datareader
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import risk_models
 from pypfopt import expected_returns
 plt.style.use('fivethirtyeight')
 
+#risk-free-rate (2-year treasury yield)
+RFRSym = ['DGS2']
+RFR = pandas_datareader.fred.FredReader(RFRSym , start = None, end = None).read()
+recent_RFR = RFR["DGS2"].iloc[-1]
+
+
+
 
 
 #stocks
-assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' , 'MT' , 'CX' , 'RACE' ]
+assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' ]
 
 
 #weightings
 weights = 1 / len(assets)
-weightings = np.array([weights for x in range(len(assets))]) #would apply the weightings to each element of the list above
+weightings = np.array([weights for x in range(len(assets))]) #would apply equal weightings to each element of the list above
+print(weightings)
 
 
 #get the stock / portfolio starting date 
@@ -90,10 +99,10 @@ S = risk_models.sample_cov(df)
 
 #get max sharpe ratio -- performance of an investment vs a 'risk-free' investment
 eff = EfficientFrontier( mu , S )
-weights = eff.max_sharpe()
+weights = eff.max_sharpe(risk_free_rate = recent_RFR)
 clean_weights = eff.clean_weights()
 print(clean_weights)
-print(eff.portfolio_performance(verbose = True))
+print(eff.portfolio_performance(verbose = True , risk_free_rate = recent_RFR))
 
 #get discrete allocation of each share per stock
 from pypfopt.discrete_allocation import DiscreteAllocation , get_latest_prices
@@ -102,5 +111,5 @@ latest_prices = get_latest_prices(df)
 weights = clean_weights
 discreate_allo = DiscreteAllocation(weights , latest_prices , total_portfolio_value = 10000)
 allocation , leftover = discreate_allo.lp_portfolio()
-print('Discreate allocation: ' , allocation)
+print('Discreate allocation (shares purchased): ' , allocation)
 print('Leftover: ${:.2f}'.format(leftover))
