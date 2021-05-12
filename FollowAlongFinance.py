@@ -11,22 +11,22 @@ from pypfopt import risk_models
 from pypfopt import expected_returns
 plt.style.use('fivethirtyeight')
 
+
+
 #risk-free-rate (2-year treasury yield)
 RFRSym = ['DGS2']
 RFR = pandas_datareader.fred.FredReader(RFRSym , start = None, end = None).read()
 recent_RFR = RFR["DGS2"].iloc[-1]
 
 
-
-
-
 #stocks
-assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' ]
+assets = [  'FB' , 'AMZN' , 'NFLX' , 'GOOG' , 'AAPL' , 'AMD' , 'TWTR' , 'RACE' , 'MT' , 'QQQ' ]
 
 
 #weightings
 weights = 1 / len(assets)
 weightings = np.array([weights for x in range(len(assets))]) #would apply equal weightings to each element of the list above
+#not entirely necesssary for the rest of operations to work
 print(weightings)
 
 
@@ -77,9 +77,9 @@ port_volatility = np.sqrt(port_variance)
 portfolioSimpleAnnualReturn = np.sum(returns.mean() * weights) * 252
 
 #manual Shapre Ratio (Rp - Rf / StdevPort)
-sharpe = portfolioSimpleAnnualReturn / port_volatility
+sharpe = (portfolioSimpleAnnualReturn - recent_RFR) / port_volatility
 
-print('Sharpe ratio : ' + str(round(sharpe)))
+print('Sharpe ratio : ' + str(sharpe))
 
 
 #Expected annual return , volatility (risk) , variance
