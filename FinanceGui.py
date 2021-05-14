@@ -8,14 +8,16 @@ import time
 import tkinter as tk
 from tkinter import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg , NavigationToolbar2Tk)
-# from FinProject import *
+from FinProject import FinCalc
 
 
 
 #########################################
 #Some user input here , possibly a GUI for selecting stocks#
 class StockSim():
-    def __init__( self , width = 900 , height = 400 , instruction = ''):
+    def __init__( self , width = 1000 , height = 500 , instruction = ''):
+        self.FinCalcs = FinCalc()
+
         self.Interface = tk.Tk()
 
         self.Interface.title("Daily Returns")
@@ -24,19 +26,19 @@ class StockSim():
         self.instructions = tk.Label(self.Interface , text = instruction)
         self.instructions.pack()
 
-        self.input_label = tk.Label(self.Interface , text = 'Stock Ticker: ')
-        self.input_label.pack()
-        self.input_label = tk.Entry(self.Interface)
-        self.input_label.pack()
+        self.asset_text_box = tk.Label(self.Interface , text = 'Stock Ticker: ')
+        self.asset_text_box.pack()
+        self.asset_text_box = tk.Entry(self.Interface)
+        self.asset_text_box.pack()
 
 
-        self.user_input = self.input_label.get()
+        self.user_input = self.asset_text_box.get()
 
         print(self.user_input)
 
 
         self.input_button = tk.Button(self.Interface , text = 'Return Results')
-        self.input_button.bind("<ButtonRelease>" , self.stock_input)
+        self.input_button.bind("<ButtonRelease>" , self.OnReturnResults)
         self.input_button.pack()
         
 
@@ -44,8 +46,10 @@ class StockSim():
 
 
 
-    def stock_input(self , event):
-        return self.input_label.get()
+
+    def OnReturnResults(self , event):
+        self.FinCalcs.assets = [self.asset_text_box.get().upper()]
+        self.FinCalcs.daily_returns()
         
 
         # self.figure = self.plt.Figure(figsize = (6,5) , dpi = 100)
