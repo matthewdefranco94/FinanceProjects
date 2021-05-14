@@ -7,56 +7,44 @@ from pandas_datareader import data as web
 import time
 import tkinter as tk
 from tkinter import *
-# from FinanceGui import StockSim
-
-
 
 
 
 #########################################
+class FinCalc():
+    def __init__(self):
+        self.assets = []
+
+        # weightings = np.array([1.0])
+
+        self.stockStartDate = '2015-01-01'
+
+        self.today = datetime.today().strftime('%Y-%m-%d')
+
+        self.df = pd.DataFrame()
+
+        for stock in self.assets:
+            self.df[stock] = web.DataReader(stock , data_source = 'yahoo' , start = self.stockStartDate , end = self.today)['Adj Close']
 
 
-start_time = time.time()
+        self.title = 'Daily Percentage Change'
 
-assets = ['AMD']
+        self.my_stocks = self.df
 
-weightings = np.array([1.0])
+        # self.stdev = self.df.std()
+        # print(self.stdev)
 
-stockStartDate = '2015-01-01'
-
-today = datetime.today().strftime('%Y-%m-%d')
-
-df = pd.DataFrame()
-
-for stock in assets:
-    df[stock] = web.DataReader(stock , data_source = 'yahoo' , start = stockStartDate , end = today)['Adj Close']
+    #create and plot graph (loops through each column)
+    def daily_returns(self):
+        for columns in self.my_stocks.columns.values:
+            self.my_stocks[columns] = self.my_stocks[columns].pct_change(periods = 1)
+            plt.plot(self.my_stocks[columns] , label = self.my_stocks)
 
 
-title = 'Daily Percentage Change'
+        plt.title(self.title)
+        plt.xlabel('Data' , fontsize= 18)
+        plt.ylabel('Daily Percentage Change' , fontsize= 18)
+        plt.legend(self.my_stocks.columns.values , loc = 'upper left')
+        plt.show()
 
-my_stocks = df
-
-stdev = df.std()
-print(stdev)
-
-def daily_returns():
-#create and plot graph (loops through each column)
-    for columns in my_stocks.columns.values:
-        my_stocks[columns] = my_stocks[columns].pct_change(periods = 1)
-        plt.plot(my_stocks[columns] , label = my_stocks)
-
-
-    plt.title(title)
-    plt.xlabel('Data' , fontsize= 18)
-    plt.ylabel('Adj Price' , fontsize= 18)
-    plt.legend(my_stocks.columns.values , loc = 'upper left')
-    plt.show()
-
-    # for items in my_stocks.columns.values:
-    #     my_stocks[items] = my_stocks[columns].std()
-
-# def return_distribution():
-
-daily_returns()
-
-print("--- %s seconds ---" % (time.time() - start_time))
+    # def return_distribution():
