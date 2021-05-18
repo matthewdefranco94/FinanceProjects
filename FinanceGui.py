@@ -9,13 +9,14 @@ import tkinter as tk
 from tkinter import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg , NavigationToolbar2Tk)
 from FinProject import FinCalc
+import csv
 
 
 
 #########################################
 #Some user input here , possibly a GUI for selecting stocks#
 class StockSim():
-    def __init__( self , width = 1000 , height = 500 , instruction = ''):
+    def __init__( self , width = 900 , height = 500 , instruction = ''):
         self.FinCalcs = FinCalc()
 
         self.Interface = tk.Tk()
@@ -46,9 +47,12 @@ class StockSim():
 
 
 
-
     def OnReturnResults(self , event):
-        self.FinCalcs.assets = [self.asset_text_box.get().upper()]
+        input_list = self.asset_text_box.get()
+        input_list = input_list.replace(' ' , "")
+        input_list = input_list.split(",")
+
+        self.FinCalcs.assets = input_list
         self.FinCalcs.daily_returns()
         
 
@@ -56,10 +60,10 @@ class StockSim():
         # self.chart_type = FigureCanvasTkAgg(figure , Interface)
         # self.chart_type.get_tk_widget().pack()
 
-
-
         
     # def plots():
     #     break
 
 Gui = StockSim()
+
+
